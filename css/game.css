@@ -59,6 +59,10 @@
   cursor: pointer;
 }
 
+.game__button--start {
+  font-size: 1.1rem;
+}
+
 .game__button.show {
   display: inline-block;
 }
