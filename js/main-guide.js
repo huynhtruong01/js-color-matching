@@ -1,4 +1,4 @@
-import { PAIRS_COUNT, GAME_STATUS } from './constants.js'
+import { PAIRS_COUNT, GAME_STATUS, GAME_TIME } from './constants.js'
 import {
   getColorElementList,
   getColorListElement,
@@ -10,7 +10,7 @@ import {
 import { getRandomColorPairs, hideButton, setText, showButton } from './utils.js'
 
 let selections = []
-let gameStatus = GAME_STATUS.PLAYING
+let gameStatus = GAME_STATUS.BLOCKING
 
 function handleCheckWin() {
   const colorElementList = getColorElementList()
@@ -60,7 +60,6 @@ function handleColorClick(colorElement) {
     // check win
     handleCheckWin()
     selections = []
-    gameStatus = GAME_STATUS.FINISHED
     return
   }
 
@@ -111,9 +110,6 @@ function handleReplayGame() {
     color.classList.remove('active')
   }
 
-  // reset gameStatus
-  gameStatus = GAME_STATUS.PLAYING
-
   // hide button replay game
   const btnAgainElement = getBtnAgainElement()
   if (!btnAgainElement) return 'Error'
@@ -142,6 +138,78 @@ function initReplay() {
   })
 }
 
+function checkGameStatus() {
+  const colorElementList = getColorElementList()
+  if (colorElementList.length === 0) return
+
+  // check win
+  const isWin = Array.from(colorElementList).every((color) => color.classList.contains('active'))
+
+  if (isWin) {
+    return {
+      status: 'win',
+    }
+  }
+
+  return {
+    status: 'lose',
+  }
+}
+
+function handleCheckWinTimer() {
+  const statusGame = checkGameStatus()
+
+  // reset game status
+  gameStatus = GAME_STATUS.FINISHED
+
+  // set text
+  const text = statusGame.status === 'win' ? 'You win 🎉🎉' : 'Game over 🤣🤣'
+  setText(text)
+
+  // show button play again
+  const btnAgainElement = getBtnAgainElement()
+  if (!btnAgainElement) return
+  showButton(btnAgainElement)
+}
+
+function handleStartGame() {
+  console.log('click')
+
+  const btnStartGame = getBtnStartElement()
+  if (!btnStartGame) return
+
+  // hide button start
+  hideButton(btnStartGame)
+
+  // game status playing
+  gameStatus = GAME_STATUS.PLAYING
+
+  // set time
+  setTimer()
+}
+
+function initStartGame() {
+  const btnStartElement = getBtnStartElement()
+  if (!btnStartElement) return
+
+  btnStartElement.addEventListener('click', () => {
+    handleStartGame()
+  })
+}
+
+function setTimer() {
+  let numberTimer = GAME_TIME
+  const timer = setInterval(() => {
+    const text = `0${numberTimer}`.slice(-2)
+    setText(`${text}s`)
+    numberTimer -= 1
+    if (numberTimer < 0 || gameStatus === GAME_STATUS.FINISHED) {
+      clearInterval(timer)
+      handleCheckWinTimer()
+    }
+  }, 1000)
+}
+
 ;(() => {
   // init colors
   initColors()
@@ -151,4 +219,7 @@ function initReplay() {
 
   // init replay
   initReplay()
+
+  // init start game
+  initStartGame()
 })()
