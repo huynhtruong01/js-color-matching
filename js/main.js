@@ -82,7 +82,7 @@ function startTimer(timerElement) {
   }, 1000)
 }
 
-function handleCellClick(colorElement) {
+function handleColorClick(colorElement) {
   if (!colorElement) return
   const colorBackground = getColorBackground()
   const colorElementList = getColorElementList()
@@ -109,15 +109,15 @@ function handleCellClick(colorElement) {
     colorBackground.style.backgroundColor = twoColorCheckList[0]
     twoColorCheckList = []
     positionList = []
-  } else {
-    setTimeout(() => {
-      for (const idx of positionList) {
-        colorElementList[idx].classList.remove('active')
-        twoColorCheckList = []
-        positionList = []
-      }
-    }, 250)
+    return
   }
+  setTimeout(() => {
+    for (const idx of positionList) {
+      colorElementList[idx].classList.remove('active')
+    }
+    twoColorCheckList = []
+    positionList = []
+  }, 500)
 }
 
 function initGame() {
@@ -136,7 +136,7 @@ function initGame() {
 
   colorListElement.addEventListener('click', (e) => {
     if (e.target.tagName !== 'LI') return
-    handleCellClick(e.target)
+    handleColorClick(e.target)
   })
 }
 

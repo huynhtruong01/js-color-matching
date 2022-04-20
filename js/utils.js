@@ -1,3 +1,5 @@
+import { getTimerElement } from './selectors.js'
+
 function shuffle(colorList) {
   if (!Array.isArray(colorList) || colorList.length <= 2) return
 
@@ -34,4 +36,24 @@ export const getRandomColorPairs = (count) => {
   shuffle(fullColorList)
 
   return fullColorList
+}
+
+// show button
+export function showButton(btn) {
+  if (!btn) return 'Error'
+  btn.classList.add('show')
+}
+
+// hide button
+export function hideButton(btn) {
+  if (!btn) return 'Error'
+  btn.classList.remove('show')
+}
+
+// set text
+export function setText(text) {
+  const timerElement = getTimerElement()
+  if (!timerElement) return
+
+  timerElement.textContent = text
 }
