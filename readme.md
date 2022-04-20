@@ -7,6 +7,8 @@ DEMO GITHUB: [https://huynhtruong01.github.io/js-color-matching/]
 
 DEMO VERCEL: [https://vercel.com/huynhtruong01/js-color-matching](https://vercel.com/huynhtruong01/js-color-matching)
 
+BRANCH: solution-again
+
 ![color matching game](./images/thumbnail.png)
 
 ## Game rule
