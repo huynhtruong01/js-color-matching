@@ -57,3 +57,32 @@ export function setText(text) {
 
   timerElement.textContent = text
 }
+
+// create timer
+export function createTimer({ seconds, onChange, onFinish }) {
+  let timerId
+
+  function start() {
+    clear()
+
+    let currentSeconds = seconds
+    timerId = setInterval(() => {
+      onChange(currentSeconds)
+      currentSeconds--
+
+      if (currentSeconds < 0) {
+        onFinish()
+        clear()
+      }
+    }, 1000)
+  }
+
+  function clear() {
+    clearInterval(timerId)
+  }
+
+  return {
+    start,
+    clear,
+  }
+}
